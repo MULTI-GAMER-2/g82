@@ -52,7 +52,7 @@ if (isset($data['token']) && isset($data['p'])) {
         $timeDiff = $currentDatetime->getTimestamp() - $datetime->getTimestamp();
 
         // Set the time limit in seconds (5 seconds in this example)
-        $timeLimit = 5;
+        $timeLimit = 10;
 
         // Validate the token based on the time limit
         if ($timeDiff <= $timeLimit) {
