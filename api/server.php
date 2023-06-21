@@ -1,31 +1,29 @@
 <?php
 
-if(isset($_SERVER["HTTP_ORIGIN"]))
-{
+if (isset($_SERVER["HTTP_ORIGIN"])) {
     // You can decide if the origin in $_SERVER['HTTP_ORIGIN'] is something you want to allow, or as we do here, just allow all
     header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-}
-else
-{
-    //No HTTP_ORIGIN set, so we allow any. You can disallow if needed here
+} else {
+    // No HTTP_ORIGIN set, so we allow any. You can disallow if needed here
     header("Access-Control-Allow-Origin: *");
 }
 
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Max-Age: 600");    // cache for 10 minutes
 
-if($_SERVER["REQUEST_METHOD"] == "OPTIONS")
-{
-    if (isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_METHOD"]))
-        header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT"); //Make sure you remove those you do not want to support
+if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
+    if (isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_METHOD"])) {
+        header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT"); // Make sure you remove those you do not want to support
+    }
 
-    if (isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_HEADERS"]))
+    if (isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_HEADERS"])) {
         header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+    }
 
-    //Just exit with 200 OK with the above headers for OPTIONS method
+    // Just exit with 200 OK with the above headers for OPTIONS method
     exit(0);
 }
-//From here, handle the request as it is ok
+// From here, handle the request as it is ok
 
 // Retrieve the JSON data from the request body
 $json = file_get_contents('php://input');
@@ -45,7 +43,7 @@ if (isset($data['token']) && isset($data['p'])) {
     $timestamp = substr($token, -13);
 
     // Convert the timestamp to a DateTime object
-    $datetime = DateTime::createFromFormat('U', floor(intval($timestamp) / 1000));
+    $datetime = DateTime::createFromFormat('U', intval($timestamp) / 1000);
 
     // Calculate the time difference between the current time and the token's timestamp
     $currentDatetime = new DateTime();
