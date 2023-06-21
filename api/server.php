@@ -74,6 +74,5 @@ if (isset($data['p']) && isset($_SERVER['HTTP_AUTHORIZATION'])) {
 }
 
 // Send the response as JSON
-header('Content-Type: application/json');
 echo json_encode($response);
 ?>
