@@ -39,11 +39,11 @@ if (isset($data['token']) && isset($data['p'])) {
     $token = $data['token'];
     $p = $data['p'];
 
-    // Extract the timestamp from the token
-    $timestamp = substr($token, -13);
+    // Convert the token to a timestamp
+    $timestamp = intval($token);
 
     // Convert the timestamp to a DateTime object
-    $datetime = DateTime::createFromFormat('U', intval($timestamp) / 1000);
+    $datetime = DateTime::createFromFormat('U', $timestamp);
 
     // Check if the DateTime object was created successfully
     if ($datetime !== false) {
@@ -51,7 +51,7 @@ if (isset($data['token']) && isset($data['p'])) {
         $currentDatetime = new DateTime();
         $timeDiff = $currentDatetime->getTimestamp() - $datetime->getTimestamp();
 
-        // Set the time limit in seconds (5 seconds in this example)
+        // Set the time limit in seconds (30 seconds in this example)
         $timeLimit = 30;
 
         // Validate the token based on the time limit
