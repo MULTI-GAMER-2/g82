@@ -7,18 +7,28 @@ header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT");
 header("Access-Control-Allow-Headers: *");
 
 if (isset($_GET['s'])) {
+    $s = $_GET['s'];
 
-  
-$s = $_GET['s'];
+    $url = "https://g82.me/t?p=" . $s;
 
-$url = "https://g82.me/t?p=". $s;
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-$curl = curl_init($url);
-curl_setopt($curl, CURLOPT_URL, $url);
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $resp = curl_exec($curl);
+    $error = curl_error($curl);
+    curl_close($curl);
 
-$resp = curl_exec($curl);
-curl_close($curl);
-echo json_encode($resp);
+    if ($error) {
+        $response = array(
+            'status' => 'error',
+            'message' => 'cURL request failed: ' . $error
+        );
+    } else {
+        // No need to encode the response again, as it is already expected to be in JSON format
+        $response = $resp;
+    }
+
+    echo $response;
 }
 ?>
