@@ -35,57 +35,37 @@ $data = json_decode($json, true);
 $response = array();
 
 // Check if the required parameters are present
-if (isset($data['token']) && isset($data['p'])) {
-    $token = $data['token'];
+if (isset($data['p']) && isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $p = $data['p'];
+    $bearerToken = $_SERVER['HTTP_AUTHORIZATION'];
 
-    // Convert the token to a timestamp
-    $timestamp = intval($token);
+    // Verify the Bearer token
+    $expectedToken = "#$%&/%$##$%&/()()(/&%$#$%&$#$&/&%$%&/(&%&/(/&%&(/&%)(/&/)(/&%(/$%&%$#\"#$%$%&/(/&/()=)(/(=)(/())(/&/(&/(/&%&/(/&%%&/(/&%$%&/&%$%&/&%$%$##$%$%&$%&/&&/()(/()=)(=))=)=(TGFFGCVBJUYTRFVBNJRDVBJUYTRFCVBHYTRDCVBN";
+    
+    if ($bearerToken === $expectedToken) {
+        // Send a request to https://g82.me/t with the parameter 'p'
+        $url = 'https://g82.me/t';
+        $requestData = array('p' => $p);
 
-    // Convert the timestamp to a DateTime object
-    $datetime = DateTime::createFromFormat('U', $timestamp);
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($requestData),
+                'timeout' => 5 // 5 seconds timeout
+            )
+        );
 
-    // Check if the DateTime object was created successfully
-    if ($datetime !== false) {
-        // Calculate the time difference between the current time and the token's timestamp
-        $currentDatetime = new DateTime();
-        $timeDiff = $currentDatetime->getTimestamp() - $datetime->getTimestamp();
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
 
-        // Set the time limit in seconds (30 seconds in this example)
-        $timeLimit = 30;
-
-        // Validate the token based on the time limit
-        if ($timeDiff <= $timeLimit) {
-            // Token is valid within the time limit
-
-            // Send a request to https://g82.me/t with the parameter 'p'
-            $url = 'https://g82.me/t';
-            $requestData = array('p' => $p);
-
-            $options = array(
-                'http' => array(
-                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                    'method'  => 'POST',
-                    'content' => http_build_query($requestData),
-                    'timeout' => 5 // 5 seconds timeout
-                )
-            );
-
-            $context  = stream_context_create($options);
-            $result = file_get_contents($url, false, $context);
-
-            // Set the result in the response
-            $response['status'] = 'success';
-            $response['message'] = $result;
-        } else {
-            // Token has expired
-            $response['status'] = 'error';
-            $response['message'] = 'Token expired';
-        }
+        // Set the result in the response
+        $response['status'] = 'success';
+        $response['message'] = $result;
     } else {
-        // Invalid token format
+        // Invalid Bearer token
         $response['status'] = 'error';
-        $response['message'] = 'Invalid token format';
+        $response['message'] = 'Invalid';
     }
 } else {
     // Required parameters are missing
