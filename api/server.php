@@ -24,44 +24,55 @@ if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
     exit(0);
 }
 
-// From here, handle the request as it is ok
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = file_get_contents('php://input');
 
-// Retrieve the JSON data from the request body
-$json = file_get_contents('php://input');
+    $url = "https://g82.me/t";
 
-// Decode the JSON data into an associative array
-$data = json_decode($json, true);
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-// Create a response array
-$response = array();
-
-// Check if the required parameter is present
-if (isset($data['p'])) {
-    $p = $data['p'];
-
-    // Send a request to https://g82.me/t with the parameter 'p'
-    $url = 'https://g82.me/t';
-    $requestData = array('p' => $p);
-
-    $options = array(
-        'http' => array(
-            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-            'method'  => 'POST',
-            'content' => http_build_query($requestData),
-            'timeout' => 5 // 5 seconds timeout
-        )
+    $headers = array(
+        "Content-Type: application/json",
     );
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
-    $context  = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 
-    // Set the result in the response
-    $response['status'] = 'success';
-    $response['message'] = $result;
+    // For debug only!
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+    $resp = curl_exec($curl);
+    curl_close($curl);
+
+    if ($resp === false) {
+        $response = array(
+            'status' => 'error',
+            'message' => 'Failed to make the request.'
+        );
+    } else {
+        $decodedResp = json_decode($resp, true);
+
+        if ($decodedResp === null) {
+            $response = array(
+                'status' => 'error',
+                'message' => 'Failed to decode the response JSON.'
+            );
+        } else {
+            $response = array(
+                'status' => 'success',
+                'message' => $decodedResp
+            );
+        }
+    }
 } else {
-    // Required parameter is missing
-    $response['status'] = 'error';
-    $response['message'] = 'Missing required parameter';
+    $response = array(
+        'status' => 'error',
+        'message' => 'Invalid request method. Only POST requests are allowed.'
+    );
 }
 
 // Send the response as JSON
