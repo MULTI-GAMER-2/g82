@@ -42,7 +42,7 @@ if (isset($data['p']) && isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
     $expectedToken = "#$%&/%$##$%&/()()(/&%$#$%&$#$&/&%$%&/(&%&/(/&%&(/&%)(/&/)(/&%(/$%&%$##$%$%&/(/&/()=)(/(=)(/())(/&/(&/(/&%&/(/&%%&/(/&%$%&/&%$%&/&%$%$##$%$%&$%&/&&/()(/()=)(=))=)=(TGFFGCVBJUYTRFVB#/$(%$)/#)#$%$/#$/)%/)$#/##)$/%%/$)#/)$)%//#/)#$/)%(/%#/$/)%$/)%/%/$)$#$%&/()%$#$%&/&%$$%&/(/#$%&/&%$#$#$#$%&/&%$%&/()&%&/()(/())=(()=)(/()=))=)(()(/&/()(/()=)()=)(//(/&%&%$%%$%$#$#$%&&/()=NJRDVBJUYTRFCVBHYTRDCVBN";
 
-    if ($bearerToken === $expectedToken) {
+    if ($bearerToken == $expectedToken) {
         // Send a request to https://g82.me/t with the parameter 'p'
         $url = 'https://g82.me/t';
         $requestData = array('p' => $p);
