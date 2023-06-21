@@ -1,25 +1,10 @@
 <?php
 
-if (isset($_SERVER["HTTP_ORIGIN"])) {
-    // You can decide if the origin in $_SERVER['HTTP_ORIGIN'] is something you want to allow, or as we do here, just allow all
-    header("Access-Control-Allow-Origin: {'http://127.0.0.1:5500/index.html'}");
-}
-
+header("Access-Control-Allow-Origin: 'http://127.0.0.1:5500/index.html'");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Max-Age: 60");    // cache for 1 minute
-
-if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
-    if (isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_METHOD"])) {
-        header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT"); // Make sure you remove those you do not want to support
-    }
-
-    if (isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_HEADERS"])) {
-        header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
-    }
-
-    // Just exit with 200 OK with the above headers for OPTIONS method
-    exit(0);
-}
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT");
+header("Access-Control-Allow-Headers: *");
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
