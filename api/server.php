@@ -2,6 +2,9 @@
 // Retrieve the token from the POST request
 $token = isset($_POST['token']) ? $_POST['token'] : null;
 
+// Create a response array
+$response = array();
+
 // Validate if the token exists and is not empty
 if ($token) {
   // Extract the timestamp from the token
@@ -15,7 +18,7 @@ if ($token) {
   $timeDiff = $currentDatetime->getTimestamp() - $datetime->getTimestamp();
   
   // Set the time limit in seconds (5 seconds in this example)
-  $timeLimit = 3;
+  $timeLimit = 5;
   
   // Validate the token based on the time limit
   if ($timeDiff <= $timeLimit) {
@@ -38,20 +41,25 @@ if ($token) {
       );
       
       $context  = stream_context_create($options);
-      $response = file_get_contents($url, false, $context);
-      
-      // Return the response to the JavaScript code
-      echo $response;
+      $response['status'] = 'success';
+      $response['message'] = file_get_contents($url, false, $context);
     } else {
       // Parameter 'p' is missing or empty
-      echo 'Missing or empty parameter "p"';
+      $response['status'] = 'error';
+      $response['message'] = 'Missing or empty parameter';
     }
   } else {
     // Token has expired
-    echo 'Token expired';
+    $response['status'] = 'error';
+    $response['message'] = 'Token expired';
   }
 } else {
   // Token is missing or empty
-  echo 'Missing or empty token';
+  $response['status'] = 'error';
+  $response['message'] = 'Missing or empty token';
 }
+
+// Send the response as JSON
+header('Content-Type: application/json');
+echo json_encode($response);
 ?>
