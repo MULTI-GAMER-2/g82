@@ -39,10 +39,8 @@ if (isset($data['p']) && isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $p = $data['p'];
     $bearerToken = $_SERVER['HTTP_AUTHORIZATION'];
 
-    // Verify the Bearer token
     $expectedToken = '#$%&/%$##$%&/()()(/&%$#$%&$#$&/&%$%&/(&%&/(/&%&(/&%)(/&/)(/&%(/$%&%$##$%$%&/(/&/()=)(/(=)(/())(/&/(&/(/&%&/(/&%%&/(/&%$%&/&%$%&/&%$%$##$%$%&$%&/&&/()(/()=)(=))=)=(TGFFGCVBJUYTRFVB#/$(%$)/#)#$%$/#$/)%/)$#/##)$/%%/$)#/)$)%//#/)#$/)%(/%#/$/)%$/)%/%/$)$#$%&/()%$#$%&/&%$$%&/(/#$%&/&%$#$#$#$%&/&%$%&/()&%&/()(/())=(()=)(/()=))=)(()(/&/()(/()=)()=)(//(/&%&%$%%$%$#$#$%&&/()=NJRDVBJUYTRFCVBHYTRDCVBN';
-    //getenv("N_V");
-    
+
     if ($bearerToken === $expectedToken) {
         // Send a request to https://g82.me/t with the parameter 'p'
         $url = 'https://g82.me/t';
