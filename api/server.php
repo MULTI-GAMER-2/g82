@@ -9,7 +9,7 @@ if (isset($_SERVER["HTTP_ORIGIN"])) {
 }
 
 header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Max-Age: 600");    // cache for 10 minutes
+header("Access-Control-Max-Age: 60");    // cache for 1 minute
 
 if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
     if (isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_METHOD"])) {
@@ -40,7 +40,7 @@ if (isset($data['p']) && isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $bearerToken = $_SERVER['HTTP_AUTHORIZATION'];
 
     // Verify the Bearer token
-    $expectedToken = getenv("a", true);
+    $expectedToken = getenv("a");
     
     if ($bearerToken === $expectedToken) {
         // Send a request to https://g82.me/t with the parameter 'p'
