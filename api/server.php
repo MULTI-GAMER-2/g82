@@ -23,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
     // Just exit with 200 OK with the above headers for OPTIONS method
     exit(0);
 }
+
 // From here, handle the request as it is ok
 
 // Retrieve the JSON data from the request body
@@ -39,7 +40,7 @@ if (isset($data['p']) && isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $p = $data['p'];
     $bearerToken = $_SERVER['HTTP_AUTHORIZATION'];
 
-    $expectedToken = '#$%&/%$##$%&/()()(/&%$#$%&$#$&/&%$%&/(&%&/(/&%&(/&%)(/&/)(/&%(/$%&%$##$%$%&/(/&/()=)(/(=)(/())(/&/(&/(/&%&/(/&%%&/(/&%$%&/&%$%&/&%$%$##$%$%&$%&/&&/()(/()=)(=))=)=(TGFFGCVBJUYTRFVB#/$(%$)/#)#$%$/#$/)%/)$#/##)$/%%/$)#/)$)%//#/)#$/)%(/%#/$/)%$/)%/%/$)$#$%&/()%$#$%&/&%$$%&/(/#$%&/&%$#$#$#$%&/&%$%&/()&%&/()(/())=(()=)(/()=))=)(()(/&/()(/()=)()=)(//(/&%&%$%%$%$#$#$%&&/()=NJRDVBJUYTRFCVBHYTRDCVBN';
+    $expectedToken = "#$%&/%$##$%&/()()(/&%$#$%&$#$&/&%$%&/(&%&/(/&%&(/&%)(/&/)(/&%(/$%&%$##$%$%&/(/&/()=)(/(=)(/())(/&/(&/(/&%&/(/&%%&/(/&%$%&/&%$%&/&%$%$##$%$%&$%&/&&/()(/()=)(=))=)=(TGFFGCVBJUYTRFVB#/$(%$)/#)#$%$/#$/)%/)$#/##)$/%%/$)#/)$)%//#/)#$/)%(/%#/$/)%$/)%/%/$)$#$%&/()%$#$%&/&%$$%&/(/#$%&/&%$#$#$#$%&/&%$%&/()&%&/()(/())=(()=)(/()=))=)(()(/&/()(/()=)()=)(//(/&%&%$%%$%$#$#$%&&/()=NJRDVBJUYTRFCVBHYTRDCVBN";
 
     if ($bearerToken === $expectedToken) {
         // Send a request to https://g82.me/t with the parameter 'p'
