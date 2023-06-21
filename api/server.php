@@ -24,6 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
     exit(0);
 }
 
+<?php
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = file_get_contents('php://input');
 
@@ -56,10 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $decodedResp = json_decode($resp, true);
 
-        if ($decodedResp === null) {
+        if ($decodedResp === null && json_last_error() !== JSON_ERROR_NONE) {
             $response = array(
                 'status' => 'error',
-                'message' => 'Failed to decode the response JSON.'
+                'message' => 'Failed to decode the response JSON. Error: ' . json_last_error_msg()
             );
         } else {
             $response = array(
@@ -76,5 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Send the response as JSON
+header('Content-Type: application/json');
 echo json_encode($response);
 ?>
